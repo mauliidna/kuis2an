@@ -800,10 +800,14 @@ function selectOption(selectedOption, optionItem) {
         optionItem.style.backgroundColor = "green"; // Warna hijau untuk jawaban benar
         feedbackElement.textContent = "Jawaban Anda benar!";
         feedbackElement.style.color = "green";
+        // Simpan jawaban benar
+        history[currentQuestionIndex] = "benar";
     } else {
         optionItem.style.backgroundColor = "red"; // Warna merah untuk jawaban salah
         feedbackElement.textContent = `Jawaban Anda salah! Jawaban yang benar adalah: ${question.answer}`;
         feedbackElement.style.color = "red";
+        // Simpan jawaban salah
+        history[currentQuestionIndex] = "salah";
 
         // Tandai jawaban yang benar
         const optionsList = document.querySelectorAll('.options li');
@@ -812,6 +816,15 @@ function selectOption(selectedOption, optionItem) {
                 item.style.backgroundColor = "green"; // Warna hijau untuk jawaban benar
             }
         });
+    }
+
+    const questionContainer = document.getElementById('quiz');
+    questionContainer.appendChild(feedbackElement);
+
+    // Tampilkan tombol Next setelah memilih jawaban
+    const nextButton = document.querySelector('.navigation button:nth-child(2)');
+    nextButton.style.display = 'inline-block';
+}
     }
 
     const questionContainer = document.getElementById('quiz');
