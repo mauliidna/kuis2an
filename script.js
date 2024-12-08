@@ -757,7 +757,7 @@ function selectOption(selectedOption, optionItem) {
         // Tandai jawaban yang benar
         const optionsList = document.querySelectorAll('.options li');
         optionsList.forEach(item => {
-            if (item.textContent === question.answer) {
+            if (item.textContent.startsWith(question.answer)) {
                 item.style.backgroundColor = "green"; // Warna hijau untuk jawaban benar
             }
         });
