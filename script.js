@@ -710,10 +710,23 @@ function loadQuestion() {
     const optionsList = document.createElement('ul');
     optionsList.classList.add('options');
 
-    question.options.forEach(option => {
+    question.options.forEach((option, index) => {
         const optionItem = document.createElement('li');
-        optionItem.textContent = option;
-        optionItem.onclick = () => selectOption(option, optionItem);
+        const radioInput = document.createElement('input');
+        radioInput.type = 'radio';
+        radioInput.name = 'option'; // Nama yang sama untuk grup radio
+        radioInput.value = option;
+
+        // Tandai radio yang sudah dipilih jika ada
+        if (history[currentQuestionIndex] === option) {
+            radioInput.checked = true;
+        }
+
+        const label = document.createElement('label');
+        label.textContent = option;
+
+        optionItem.appendChild(radioInput);
+        optionItem.appendChild(label);
         optionsList.appendChild(optionItem);
     });
 
@@ -723,8 +736,26 @@ function loadQuestion() {
     // Tambahkan tombol Submit
     const submitButton = document.createElement('button');
     submitButton.textContent = 'Submit';
-    submitButton.onclick = checkAnswer;
+    submitButton.onclick = checkAnswers;
     questionContainer.appendChild(submitButton);
+
+    // Tambahkan tombol Previous dan Next
+    const navigation = document.createElement('div');
+    navigation.classList.add('navigation');
+
+    const prevButton = document.createElement('button');
+    prevButton.textContent = 'Previous';
+    prevButton.onclick = () => navigate(-1);
+    prevButton.disabled = currentQuestionIndex === 0;
+
+    const nextButton = document.createElement('button');
+    nextButton.textContent = 'Next';
+    nextButton.onclick = () => navigate(1);
+    nextButton.disabled = currentQuestionIndex === questions.length - 1;
+
+    navigation.appendChild(prevButton);
+    navigation.appendChild(nextButton);
+    questionContainer.appendChild(navigation);
 
     // Update navigasi
     updateNavigation();
@@ -740,9 +771,9 @@ function updateNavigation() {
         box.textContent = index + 1;
 
         // Set warna berdasarkan status jawaban
-        if (history[index] === "benar") {
+        if (history[index] === questions[index].answer) {
             box.style.backgroundColor = "green"; // Jawaban benar
-        } else if (history[index] === "salah") {
+        } else if (history[index] !== null) {
             box.style.backgroundColor = "red"; // Jawaban salah
         } else {
             box.style.backgroundColor = "white"; // Belum dikerjakan
@@ -757,59 +788,42 @@ function updateNavigation() {
     });
 }
 
-function selectOption(selectedOption, optionItem) {
-    const question = questions[currentQuestionIndex];
-
-    // Tandai jawaban yang dipilih
-    optionItem.style.backgroundColor = "lightblue"; // Warna untuk jawaban yang dipilih
-}
-
-function checkAnswer() {
-    const question = questions[currentQuestionIndex];
-    const selectedOption = document.querySelector('.options li[style*="lightblue"]');
+function checkAnswers() {
+    const selectedOption = document.querySelector('input[name="option"]:checked');
 
     if (!selectedOption) {
         alert("Silakan pilih jawaban terlebih dahulu.");
         return;
     }
 
-    const feedbackElement = document.createElement('div');
-    feedbackElement.classList.add('feedback');
+    const selectedValue = selectedOption.value;
+    const question = questions[currentQuestionIndex];
+
+    // Simpan jawaban yang dipilih
+    history[currentQuestionIndex] = selectedValue;
 
     // Cek jawaban
-    if (selectedOption.textContent.startsWith(question.answer)) {
+    if (selectedValue === question.answer) {
         score++;
-        feedbackElement.textContent = "Jawaban Anda benar!";
-        feedbackElement.style.color = "green";
-        history[currentQuestionIndex] = "benar"; // Simpan jawaban benar
+        selectedOption.parentElement.style.backgroundColor = "green"; // Warna hijau untuk jawaban benar
     } else {
-        feedbackElement.textContent = `Jawaban Anda salah! Jawaban yang benar adalah: ${question.answer}`;
-        feedbackElement.style.color = "red";
-        history[currentQuestionIndex] = "salah"; // Simpan jawaban salah
-
+        selectedOption.parentElement.style.backgroundColor = "red"; // Warna merah untuk jawaban salah
         // Tandai jawaban yang benar
         const optionsList = document.querySelectorAll('.options li');
         optionsList.forEach(item => {
-            if (item.textContent.startsWith(question.answer)) {
+            const radioInput = item.querySelector('input[type="radio"]');
+            if (radioInput.value === question.answer) {
                 item.style.backgroundColor = "green"; // Warna hijau untuk jawaban benar
             }
         });
     }
 
-    const questionContainer = document.getElementById('quiz ');
-    questionContainer.appendChild(feedbackElement);
-
     // Update navigasi setelah jawaban diperiksa
     updateNavigation();
 
-    // Tampilkan tombol Next jika semua pertanyaan telah dijawab
+    // Tampilkan hasil jika semua pertanyaan telah dijawab
     if (history.every(status => status !== null)) {
         showResult();
-    } else {
-        const nextButton = document.createElement('button');
-        nextButton.textContent = 'Next';
-        nextButton.onclick = () => navigate(1);
-        questionContainer.appendChild(nextButton);
     }
 }
 
