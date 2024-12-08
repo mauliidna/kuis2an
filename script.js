@@ -714,7 +714,7 @@ function loadQuestion() {
     question.options.forEach((option) => {
         const optionItem = document.createElement('li');
         optionItem.textContent = option;
-        optionItem.onclick = () => selectOption(option, optionItem); // Menambahkan event click
+        optionItem.onclick = () => selectOption(option); // Menambahkan event click
 
         // Tandai jika sudah dipilih
         if (history[currentQuestionIndex] === option) {
@@ -755,7 +755,7 @@ function loadQuestion() {
     updateNavigation();
 }
 
-function selectOption(selectedOption, optionItem) {
+function selectOption(selectedOption) {
     // Simpan jawaban yang dipilih
     history[currentQuestionIndex] = selectedOption;
 
@@ -805,7 +805,9 @@ function showResult() {
     score = 0;
     questions.forEach((question, index) => {
         const selectedOption = history[index];
-        if (selectedOption === question.answer) score++;
+        if (selectedOption === question.answer) {
+            score++;
+        }
     });
 
     const resultElement = document.createElement('div');
@@ -814,6 +816,12 @@ function showResult() {
 }
 
 function navigate(direction) {
+    // Simpan jawaban yang dipilih
+    const selectedOption = document.querySelector('input[name="option"]:checked');
+    if (selectedOption) {
+        history[currentQuestionIndex] = selectedOption.value;
+    }
+
     // Pindah ke pertanyaan berikutnya
     currentQuestionIndex += direction;
     loadQuestion();
