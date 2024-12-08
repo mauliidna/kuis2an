@@ -713,21 +713,14 @@ function loadQuestion() {
 
     question.options.forEach((option) => {
         const optionItem = document.createElement('li');
-        const radioInput = document.createElement('input');
-        radioInput.type = 'radio';
-        radioInput.name = 'option'; // Nama yang sama untuk grup radio
-        radioInput.value = option;
+        optionItem.textContent = option;
+        optionItem.onclick = () => selectOption(option, optionItem); // Menambahkan event click
 
-        // Tandai radio yang sudah dipilih jika ada
+        // Tandai jika sudah dipilih
         if (history[currentQuestionIndex] === option) {
-            radioInput.checked = true;
+            optionItem.style.backgroundColor = history[currentQuestionIndex] === question.answer ? "green" : "red";
         }
 
-        const label = document.createElement('label');
-        label.textContent = option;
-
-        optionItem.appendChild(radioInput);
-        optionItem.appendChild(label);
         optionsList.appendChild(optionItem);
     });
 
@@ -760,6 +753,21 @@ function loadQuestion() {
 
     // Update navigasi
     updateNavigation();
+}
+
+function selectOption(selectedOption, optionItem) {
+    // Simpan jawaban yang dipilih
+    history[currentQuestionIndex] = selectedOption;
+
+    // Update warna semua opsi
+    const options = document.querySelectorAll('.options li');
+    options.forEach((item) => {
+        if (item.textContent === selectedOption) {
+            item.style.backgroundColor = selectedOption === questions[currentQuestionIndex].answer ? "green" : "red"; // Hijau jika benar, merah jika salah
+        } else {
+            item.style.backgroundColor = ""; // Reset warna untuk opsi lain
+        }
+    });
 }
 
 function updateNavigation() {
@@ -798,7 +806,6 @@ function showResult() {
     questions.forEach((question, index) => {
         const selectedOption = history[index];
         if (selectedOption === question.answer) score++;
-        }
     });
 
     const resultElement = document.createElement('div');
@@ -807,12 +814,6 @@ function showResult() {
 }
 
 function navigate(direction) {
-    // Simpan jawaban yang dipilih
-    const selectedOption = document.querySelector('input[name="option"]:checked');
-    if (selectedOption) {
-        history[currentQuestionIndex] = selectedOption.value;
-    }
-
     // Pindah ke pertanyaan berikutnya
     currentQuestionIndex += direction;
     loadQuestion();
