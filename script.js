@@ -710,7 +710,7 @@ function loadQuestion() {
     const optionsList = document.createElement('ul');
     optionsList.classList.add('options');
 
-    question.options.forEach((option, index) => {
+    question.options.forEach((option) => {
         const optionItem = document.createElement('li');
         const radioInput = document.createElement('input');
         radioInput.type = 'radio';
@@ -796,7 +796,7 @@ function showResult() {
     score = 0;
     questions.forEach((question, index) => {
         const selectedOption = history[index];
-        if (selectedOption === question.answer) {
+        if (selectedOption === question.answer ) {
             score++;
         }
     });
@@ -804,6 +804,18 @@ function showResult() {
     const resultElement = document.createElement('div');
     resultElement.innerHTML = `Anda mendapatkan ${score} dari ${questions.length} jawaban.`;
     questionContainer.appendChild(resultElement);
+}
+
+function navigate(direction) {
+    // Simpan jawaban yang dipilih
+    const selectedOption = document.querySelector('input[name="option"]:checked');
+    if (selectedOption) {
+        history[currentQuestionIndex] = selectedOption.value;
+    }
+
+    // Pindah ke pertanyaan berikutnya
+    currentQuestionIndex += direction;
+    loadQuestion();
 }
 
 // Load the first question
