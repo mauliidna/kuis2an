@@ -805,8 +805,7 @@ function showResult() {
     score = 0;
     questions.forEach((question, index) => {
         const selectedOption = history[index];
-        if (selectedOption === question.answer) {
-            score++;
+        if (selectedOption === question.answer) score++;
         }
     });
 
@@ -816,13 +815,10 @@ function showResult() {
 }
 
 function navigate(direction) {
-    // Simpan jawaban yang dipilih
-    const selectedOption = document.querySelector('input[name="option"]:checked');
-    if (selectedOption) {
-        history[currentQuestionIndex] = selectedOption.value;
-    }
-
     // Pindah ke pertanyaan berikutnya
     currentQuestionIndex += direction;
     loadQuestion();
 }
+
+// Inisialisasi pertanyaan pertama saat halaman dimuat ```javascript
+loadQuestion();
