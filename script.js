@@ -695,32 +695,32 @@ const questions = [
 ];
 
 
-let currentQuestionIndex = 0;
-let history = new Array(questions.length).fill(null); // Menyimpan status jawaban
+let currentQuestionIndex = 0; // Menyimpan indeks pertanyaan saat ini
+let history = new Array(questions.length).fill(null); // Menyimpan jawaban yang dipilih
 
 function loadQuestion() {
     const questionContainer = document.getElementById('question');
     const optionsContainer = document.getElementById('options');
-    questionContainer.innerHTML = '';
-    optionsContainer.innerHTML = '';
+    questionContainer.innerHTML = ''; // Kosongkan kontainer pertanyaan
+    optionsContainer.innerHTML = ''; // Kosongkan kontainer opsi
 
-    const question = questions[currentQuestionIndex];
-    questionContainer.innerHTML = question.question;
+    const question = questions[currentQuestionIndex]; // Ambil pertanyaan saat ini
+    questionContainer.innerHTML = question.question; // Tampilkan pertanyaan
 
-    question.options.forEach((option, index) => {
+    // Tampilkan opsi
+    question.options.forEach((option) => {
         const optionItem = document.createElement('li');
         optionItem.textContent = option;
         optionItem.onclick = () => selectOption(option); // Menambahkan event click
         optionsContainer.appendChild(optionItem);
     });
 
-    updateNavigation();
+    updateNavigation(); // Memperbarui navigasi
     checkAnswer(); // Memeriksa jawaban yang sudah dipilih
 }
 
 function selectOption(selectedOption) {
-    // Simpan jawaban yang dipilih
-    history[currentQuestionIndex] = selectedOption;
+    history[currentQuestionIndex] = selectedOption; // Simpan jawaban yang dipilih
     loadQuestion(); // Muat pertanyaan baru
 }
 
@@ -739,34 +739,34 @@ function checkAnswer() {
 
 function prevQuestion() {
     if (currentQuestionIndex > 0) {
-        currentQuestionIndex--;
-        loadQuestion();
+        currentQuestionIndex--; // Turun satu pertanyaan
+        loadQuestion(); // Muat pertanyaan baru
     }
 }
 
 function nextQuestion() {
     if (currentQuestionIndex < questions.length - 1) {
-        currentQuestionIndex++;
-        loadQuestion();
+        currentQuestionIndex++; // Naik satu pertanyaan
+        loadQuestion(); // Muat pertanyaan baru
     }
 }
 
 function showResult() {
-    const quizContainer = document.getElementById('quiz');
     const score = history.reduce((acc, answer, index) => {
-        return answer === questions[index].answer ? acc + 1 : acc;
+        return answer === questions[index].answer ? acc + 1 : acc; // Hitung skor
     }, 0);
+    const quizContainer = document.getElementById('quiz');
     quizContainer.innerHTML = `<h2>Anda mendapatkan ${score} dari ${questions.length} jawaban.</h2>`;
 }
 
 function updateNavigation() {
     const navigationContainer = document.getElementById('navigation-container');
-    navigationContainer.innerHTML = '';
+    navigationContainer.innerHTML = ''; // Kosongkan kontainer navigasi
 
     questions.forEach((_, index) => {
         const box = document.createElement('div');
         box.classList.add('nav-box');
-        box.textContent = index + 1;
+        box.textContent = index + 1; // Tampilkan nomor pertanyaan
 
         // Set warna berdasarkan status jawaban
         if (history[index] === questions[index].answer) {
@@ -778,12 +778,11 @@ function updateNavigation() {
         }
 
         box.onclick = () => {
-            currentQuestionIndex = index;
-            loadQuestion();
+            currentQuestionIndex = index; // Set indeks pertanyaan saat ini
+            loadQuestion(); // Muat pertanyaan baru
         };
 
-        navigationContainer.appendChild(box);
-    });
+        navigationContainer.appendChild(box); });
 }
 
 // Inisialisasi pertanyaan pertama saat halaman dimuat
