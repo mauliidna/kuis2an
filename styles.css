@@ -76,7 +76,8 @@ button:disabled {
 }
 
 .nav-box {
-    width: 30px; /* Lebar kotak */
+    flex: 1 1 50px; /* Menggunakan flex untuk membuat kotak responsif */
+    max-width: 30px; /* Maksimal lebar kotak */
     height: 30px; /* Tinggi kotak */
     margin: 5px; /* Jarak antar kotak */
     display: flex;
@@ -87,4 +88,12 @@ button:disabled {
     cursor: pointer;
     font-weight: bold;
     transition: background-color 0.3s; /* Animasi saat mengubah warna */
+}
+
+/* Media Query untuk layar kecil */
+@media (max-width: 600px) {
+    .nav-box {
+        flex: 1 1 20%; /* Mengubah ukuran kotak untuk layar kecil */
+        max-width: 50px; /* Maksimal lebar kotak */
+    }
 }
