@@ -751,6 +751,7 @@ function showResult() {
     quizContainer.innerHTML = `<h2>Anda mendapatkan ${score} dari ${questions.length} jawaban.</h2>`;
 }
 
+
 function updateNavigation() {
     const navigationContainer = document.getElementById('navigation-container');
     navigationContainer.innerHTML = '';
@@ -761,18 +762,21 @@ function updateNavigation() {
         box.textContent = index + 1;
 
         // Set warna berdasarkan status jawaban
-        if (history[index] === questions[index].answer) {
-            box.style.backgroundColor = "green"; // Jawaban benar
-        } else if (history[index] !== null) {
-            box.style.backgroundColor = "red"; // Jawaban salah
-        } else {
-            box.style.backgroundColor = "white"; // Belum dikerjakan
-        }
+if (history[index] === questions[index].answer) {
+    box.style.backgroundColor = "green"; // Jawaban benar
+} else if (history[index] !== null) {
+    box.style.backgroundColor = "red"; // Jawaban salah
+} else {
+    box.style.backgroundColor = "white"; // Belum dikerjakan
+}
 
-        box.onclick = () => {
-            currentQuestionIndex = index;
-            loadQuestion();
-        };
+// Menambahkan event listener untuk mengubah jawaban
+box.onclick = () => {
+    // Simpan jawaban yang dipilih ke dalam history
+    history[currentQuestionIndex] = box.dataset.answer; // Pastikan box memiliki data attribute 'data-answer'
+    currentQuestionIndex = index; // Set index pertanyaan saat ini
+    loadQuestion(); // Muat pertanyaan baru
+};
 
         navigationContainer.appendChild(box);
     });
