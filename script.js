@@ -679,7 +679,7 @@ const questions = [
                     "d. Memvalidasi data dengan metode cross-validation",
                     "e. Memilih tetangga terdekat"
                 ],
-                "answer": "b"
+                "answer": "c"
             },
         {
             "question": "63. Manakah yang bukan kelebihan dari metode Support Vector Machine (SVM)?",
