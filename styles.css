@@ -69,20 +69,21 @@ button:disabled {
     margin-top: 10px;
 }
 #navigation-container {
-    display: flex;
-    justify-content: center;
+    display: flex; /* Menggunakan flexbox untuk tata letak horizontal */
+    justify-content: center; /* Menyusun kotak di tengah */
     margin-bottom: 20px;
 }
 
 .nav-box {
     width: 30px;
     height: 30px;
-    margin: 5px;
+    margin: 5px; /* Jarak antar kotak */
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: center; /* Menyusun teks di tengah secara vertikal */
+    justify-content: center; /* Menyusun teks di tengah secara horizontal */
     border: 1px solid #ccc;
     border-radius: 5px;
     cursor: pointer;
     font-weight: bold;
+    transition: background-color 0.3s; /* Animasi saat mengubah warna */
 }
