@@ -719,6 +719,57 @@ function loadQuestion() {
     questionContainer.appendChild(questionElement);
     questionContainer.appendChild(optionsList);
 
+    // Update navigation
+    updateNavigation();
+
+    // Tambahkan tombol Next dan Previous
+    const navigation = document.createElement('div');
+    navigation.classList.add('navigation');
+
+    const prevButton = document.createElement('button');
+    prevButton.textContent = 'Previous';
+    prevButton.onclick = () => navigate(-1);
+    prevButton.disabled = currentQuestionIndex === 0; // Disable jika di pertanyaan pertama
+
+    const nextButton = document.createElement('button');
+    nextButton.textContent = 'Next';
+    nextButton.onclick = () => navigate(1);
+    nextButton.disabled = currentQuestionIndex === questions.length - 1; // Disable jika di pertanyaan terakhir
+
+    navigation.appendChild(prevButton);
+    navigation.appendChild(nextButton);
+    questionContainer.appendChild(navigation);
+}
+
+function updateNavigation() {
+    const navigationContainer = document.getElementById('navigation-container');
+    navigationContainer.innerHTML = ''; // Clear previous navigation
+
+    questions.forEach((_, index) => {
+        const box = document.createElement('div');
+        box.classList.add('nav-box');
+        box.textContent = index + 1; // Nomor pertanyaan
+        box.onclick = () => {
+            currentQuestionIndex = index;
+            loadQuestion();
+        };
+
+        // Set warna berdasarkan status jawaban
+        if (index < currentQuestionIndex) {
+            box.style.backgroundColor = "green"; // Jawaban benar
+        } else if (index === currentQuestionIndex) {
+            box.style.backgroundColor = "white"; // Pertanyaan saat ini
+        } else {
+            box.style.backgroundColor = "white"; // Belum dikerjakan
+        }
+
+        navigationContainer.appendChild(box);
+    });
+}
+
+    questionContainer.appendChild(questionElement);
+    questionContainer.appendChild(optionsList);
+
     // Tambahkan tombol Next dan Previous
     const navigation = document.createElement('div');
     navigation.classList.add('navigation');
