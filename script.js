@@ -696,7 +696,6 @@ const questions = [
 
 
 let currentQuestionIndex = 0;
-let score = 0;
 let history = new Array(questions.length).fill(null); // Menyimpan status jawaban
 
 function loadQuestion() {
@@ -711,7 +710,6 @@ function loadQuestion() {
     question.options.forEach((option, index) => {
         const optionItem = document.createElement('li');
         optionItem.textContent = option;
-        optionItem.id = `option-${index}`; // Set ID untuk setiap opsi
         optionItem.onclick = () => selectOption(option); // Menambahkan event click
         optionsContainer.appendChild(optionItem);
     });
@@ -729,7 +727,7 @@ function selectOption(selectedOption) {
 function checkAnswer() {
     const options = document.querySelectorAll('.options li');
     options.forEach((item, index) => {
-        if (history[currentQuestionIndex] === questions[currentQuestionIndex].answer) {
+        if (history[currentQuestionIndex] === questions[currentQuestionIndex].options[index]) {
             item.style.backgroundColor = "green"; // Jawaban benar
         } else if (history[currentQuestionIndex] !== null) {
             item.style.backgroundColor = "red"; // Jawaban salah
@@ -755,6 +753,9 @@ function nextQuestion() {
 
 function showResult() {
     const quizContainer = document.getElementById('quiz');
+    const score = history.reduce((acc, answer, index) => {
+        return answer === questions[index].answer ? acc + 1 : acc;
+    }, 0);
     quizContainer.innerHTML = `<h2>Anda mendapatkan ${score} dari ${questions.length} jawaban.</h2>`;
 }
 
