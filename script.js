@@ -779,8 +779,10 @@ function updateNavigation() {
             box.style.backgroundColor = "white"; // Belum dikerjakan
         }
 
+        box.onclick ```javascript
         box.onclick = () => {
-            currentQuestionIndex = index; // Set indeks pertanyaan saat ini loadQuestion(); // Muat pertanyaan baru
+            currentQuestionIndex = index; // Set indeks pertanyaan saat ini
+            loadQuestion(); // Muat pertanyaan baru
         };
 
         navigationContainer.appendChild(box);
