@@ -775,7 +775,7 @@ function selectOption(selectedOption, optionItem) {
     feedbackElement.classList.add('feedback');
 
     // Tandai jawaban yang dipilih
-    if (selectedOption === question.answer) {
+    if (selectedOption.startsWith(question.answer)) {
         score++;
         optionItem.style.backgroundColor = "green"; // Warna hijau untuk jawaban benar
         feedbackElement.textContent = "Jawaban Anda benar!";
@@ -788,7 +788,7 @@ function selectOption(selectedOption, optionItem) {
         history[currentQuestionIndex] = "salah"; // Simpan jawaban salah
 
         // Tandai jawaban yang benar
-        const optionsList = document.querySelectorAll('.options li');
+        const options List = document.querySelectorAll('.options li');
         optionsList.forEach(item => {
             if (item.textContent.startsWith(question.answer)) {
                 item.style.backgroundColor = "green"; // Warna hijau untuk jawaban benar
@@ -802,6 +802,11 @@ function selectOption(selectedOption, optionItem) {
     // Tampilkan tombol Next setelah memilih jawaban
     const nextButton = document.querySelector('.navigation button:nth-child(2)');
     nextButton.style.display = 'inline-block';
+
+    // Jika semua pertanyaan telah dijawab, tampilkan hasil
+    if (history.every(status => status !== null)) {
+        showResult();
+    }
 }
 
 function navigate(direction) {
