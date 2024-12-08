@@ -694,7 +694,6 @@ const questions = [
     },
 ];
 
-
 let currentQuestionIndex = 0; // Menyimpan indeks pertanyaan saat ini
 let history = new Array(questions.length).fill(null); // Menyimpan jawaban yang dipilih
 
@@ -727,12 +726,15 @@ function selectOption(selectedOption) {
 function checkAnswer() {
     const options = document.querySelectorAll('.options li');
     options.forEach((item, index) => {
+        // Hanya ubah warna untuk opsi yang dipilih
         if (history[currentQuestionIndex] === questions[currentQuestionIndex].options[index]) {
-            item.style.backgroundColor = "green"; // Jawaban benar
-        } else if (history[currentQuestionIndex] !== null) {
-            item.style.backgroundColor = "red"; // Jawaban salah
+            if (history[currentQuestionIndex] === questions[currentQuestionIndex].answer) {
+                item.style.backgroundColor = "green"; // Jawaban benar
+            } else {
+                item.style.backgroundColor = ""; // Tidak mengubah warna jika salah
+            }
         } else {
-            item.style.backgroundColor = ""; // Belum dikerjakan
+            item.style.backgroundColor = ""; // Reset warna untuk opsi lain
         }
     });
 }
@@ -772,17 +774,17 @@ function updateNavigation() {
         if (history[index] === questions[index].answer) {
             box.style.backgroundColor = "green"; // Jawaban benar
         } else if (history[index] !== null) {
-            box.style.backgroundColor = "red"; // Jawaban salah
+            box.style.backgroundColor = "white"; // Jawaban salah
         } else {
             box.style.backgroundColor = "white"; // Belum dikerjakan
         }
 
         box.onclick = () => {
-            currentQuestionIndex = index; // Set indeks pertanyaan saat ini
-            loadQuestion(); // Muat pertanyaan baru
+            currentQuestionIndex = index; // Set indeks pertanyaan saat ini loadQuestion(); // Muat pertanyaan baru
         };
 
-        navigationContainer.appendChild(box); });
+        navigationContainer.appendChild(box);
+    });
 }
 
 // Inisialisasi pertanyaan pertama saat halaman dimuat
