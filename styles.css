@@ -1,57 +1,59 @@
 body {
     font-family: Arial, sans-serif;
-    margin: 20px;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+.container {
+    max-width: 600px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+h1 {
+    text-align: center;
+    color: #333;
 }
 .question {
-    margin-bottom: 20px;
+    margin: 20px 0;
 }
 .options {
     list-style-type: none;
     padding: 0;
 }
 .options li {
-    padding: 10px;
-    border: 1px solid #ccc;
+    background: #e7e7e7;
     margin: 5px 0;
+    padding: 10px;
+    border-radius: 5px;
     cursor: pointer;
 }
-.options li.selected {
-    background-color: lightblue;
+.options li:hover {
+    background: #d7d7d7;
 }
-.options li.correct {
-    background-color: green;
-    color: white;
-}
-.options li.incorrect {
-    background-color: red;
-    color: white;
+#result {
+    margin-top: 20px;
+    font-size: 1.2em;
+    text-align: center;
 }
 .navigation {
     margin-top: 20px;
-}
-.navigation button {
-    margin-right: 10px;
-}
-.navigation .number {
-    display: inline-block;
-    width: 30px;
-    height: 30px;
-    line-height: 30px;
     text-align: center;
-    border: 1px solid #ccc;
-    margin: 0 5px;
+}
+button {
+    padding: 10px 15px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007BFF;
+    color: white;
     cursor: pointer;
 }
-.navigation .number.selected {
-    background-color: lightblue;
-}
-.navigation .number.correct {
-    background-color: green;
-    color: white;
-}
-.navigation .number.incorrect {
-    background-color: red;
-    color: white;
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
 }
 .feedback {
     margin-top: 10px;
