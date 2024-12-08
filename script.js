@@ -797,8 +797,7 @@ function showResult() {
     score = 0;
     questions.forEach((question, index) => {
         const selectedOption = history[index];
-        if (selectedOption === question .answer) {
-            score++;
+        if (selectedOption === question.answer) score++;
         }
     });
 
@@ -812,28 +811,11 @@ function navigate(direction) {
     const selectedOption = document.querySelector('input[name="option"]:checked');
     if (selectedOption) {
         history[currentQuestionIndex] = selectedOption.value;
-        updateOptionColors(); // Update warna opsi setelah memilih
     }
 
     // Pindah ke pertanyaan berikutnya
     currentQuestionIndex += direction;
     loadQuestion();
-}
-
-function updateOptionColors() {
-    const options = document.querySelectorAll('.options li');
-    options.forEach((optionItem) => {
-        const radioInput = optionItem.querySelector('input');
-        if (radioInput.checked) {
-            if (radioInput.value === questions[currentQuestionIndex].answer) {
-                optionItem.style.backgroundColor = "green"; // Jawaban benar
-            } else {
-                optionItem.style.backgroundColor = "red"; // Jawaban salah
-            }
-        } else {
-            optionItem.style.backgroundColor = ""; // Reset warna jika tidak dipilih
-        }
-    });
 }
 
 // Load the first question
