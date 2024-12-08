@@ -720,26 +720,14 @@ function loadQuestion() {
     questionContainer.appendChild(questionElement);
     questionContainer.appendChild(optionsList);
 
+    // Tambahkan tombol Submit
+    const submitButton = document.createElement('button');
+    submitButton.textContent = 'Submit';
+    submitButton.onclick = checkAnswer;
+    questionContainer.appendChild(submitButton);
+
     // Update navigasi
     updateNavigation();
-
-    // Tambahkan tombol Next dan Previous
-    const navigation = document.createElement('div');
-    navigation.classList.add('navigation');
-
-    const prevButton = document.createElement('button');
-    prevButton.textContent = 'Previous';
-    prevButton.onclick = () => navigate(-1);
-    prevButton.disabled = currentQuestionIndex === 0;
-
-    const nextButton = document.createElement('button');
-    nextButton.textContent = 'Next';
-    nextButton.onclick = () => navigate(1);
-    nextButton.disabled = currentQuestionIndex === questions.length - 1;
-
-    navigation.appendChild(prevButton);
-    navigation.appendChild(nextButton);
-    questionContainer.appendChild(navigation);
 }
 
 function updateNavigation() {
@@ -771,24 +759,36 @@ function updateNavigation() {
 
 function selectOption(selectedOption, optionItem) {
     const question = questions[currentQuestionIndex];
+
+    // Tandai jawaban yang dipilih
+    optionItem.style.backgroundColor = "lightblue"; // Warna untuk jawaban yang dipilih
+}
+
+function checkAnswer() {
+    const question = questions[currentQuestionIndex];
+    const selectedOption = document.querySelector('.options li[style*="lightblue"]');
+
+    if (!selectedOption) {
+        alert("Silakan pilih jawaban terlebih dahulu.");
+        return;
+    }
+
     const feedbackElement = document.createElement('div');
     feedbackElement.classList.add('feedback');
 
-    // Tandai jawaban yang dipilih
-    if (selectedOption.startsWith(question.answer)) {
+    // Cek jawaban
+    if (selectedOption.textContent.startsWith(question.answer)) {
         score++;
-        optionItem.style.backgroundColor = "green"; // Warna hijau untuk jawaban benar
         feedbackElement.textContent = "Jawaban Anda benar!";
         feedbackElement.style.color = "green";
         history[currentQuestionIndex] = "benar"; // Simpan jawaban benar
     } else {
-        optionItem.style.backgroundColor = "red"; // Warna merah untuk jawaban salah
         feedbackElement.textContent = `Jawaban Anda salah! Jawaban yang benar adalah: ${question.answer}`;
         feedbackElement.style.color = "red";
         history[currentQuestionIndex] = "salah"; // Simpan jawaban salah
 
         // Tandai jawaban yang benar
-        const options List = document.querySelectorAll('.options li');
+        const optionsList = document.querySelectorAll('.options li');
         optionsList.forEach(item => {
             if (item.textContent.startsWith(question.answer)) {
                 item.style.backgroundColor = "green"; // Warna hijau untuk jawaban benar
@@ -796,16 +796,20 @@ function selectOption(selectedOption, optionItem) {
         });
     }
 
-    const questionContainer = document.getElementById('quiz');
+    const questionContainer = document.getElementById('quiz ');
     questionContainer.appendChild(feedbackElement);
 
-    // Tampilkan tombol Next setelah memilih jawaban
-    const nextButton = document.querySelector('.navigation button:nth-child(2)');
-    nextButton.style.display = 'inline-block';
+    // Update navigasi setelah jawaban diperiksa
+    updateNavigation();
 
-    // Jika semua pertanyaan telah dijawab, tampilkan hasil
+    // Tampilkan tombol Next jika semua pertanyaan telah dijawab
     if (history.every(status => status !== null)) {
         showResult();
+    } else {
+        const nextButton = document.createElement('button');
+        nextButton.textContent = 'Next';
+        nextButton.onclick = () => navigate(1);
+        questionContainer.appendChild(nextButton);
     }
 }
 
