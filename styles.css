@@ -1,99 +1,58 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 20px;
+    margin: 20px;
 }
-
-.container {
-    max-width: 600px;
-    margin: auto;
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
-    text-align: center;
-    color: #333;
-}
-
 .question {
-    margin: 20px 0;
+    margin-bottom: 20px;
 }
-
 .options {
     list-style-type: none;
     padding: 0;
 }
-
 .options li {
-    background: #e7e7e7;
-    margin: 5px 0;
     padding: 10px;
-    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin: 5px 0;
     cursor: pointer;
 }
-
-.options li:hover {
-    background: #d7d7d7;
+.options li.selected {
+    background-color: lightblue;
 }
-
-#result {
-    margin-top: 20px;
-    font-size: 1.2em;
-    text-align: center;
+.options li.correct {
+    background-color: green;
+    color: white;
+}
+.options li.incorrect {
+    background-color: red;
+    color: white;
 }
 .navigation {
     margin-top: 20px;
-    text-align: center;
 }
-
-button {
-    padding: 10px 15px;
-    margin: 5px;
-    border: none;
-    border-radius: 5px;
-    background-color: #007BFF;
-    color: white;
+.navigation button {
+    margin-right: 10px;
+}
+.navigation .number {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border: 1px solid #ccc;
+    margin: 0 5px;
     cursor: pointer;
 }
-
-button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
+.navigation .number.selected {
+    background-color: lightblue;
 }
-
+.navigation .number.correct {
+    background-color: green;
+    color: white;
+}
+.navigation .number.incorrect {
+    background-color: red;
+    color: white;
+}
 .feedback {
     margin-top: 10px;
-}
-#navigation-container {
-    display: flex; /* Menggunakan flexbox untuk tata letak */
-    flex-wrap: wrap; /* Membuat kotak berpindah ke baris berikutnya jika tidak ada ruang */
-    justify-content: center; /* Menyusun kotak di tengah */
-    margin-bottom: 20px;
-}
-
-.nav-box {
-    flex: 1 1 50px; /* Menggunakan flex untuk membuat kotak responsif */
-    max-width: 30px; /* Maksimal lebar kotak */
-    height: 30px; /* Tinggi kotak */
-    margin: 5px; /* Jarak antar kotak */
-    display: flex;
-    align-items: center; /* Menyusun teks di tengah secara vertikal */
-    justify-content: center; /* Menyusun teks di tengah secara horizontal */
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s; /* Animasi saat mengubah warna */
-}
-
-/* Media Query untuk layar kecil */
-@media (max-width: 600px) {
-    .nav-box {
-        flex: 1 1 20%; /* Mengubah ukuran kotak untuk layar kecil */
-        max-width: 50px; /* Maksimal lebar kotak */
-    }
 }
