@@ -736,7 +736,7 @@ function loadQuestion() {
     // Tambahkan tombol Submit
     const submitButton = document.createElement('button');
     submitButton.textContent = 'Submit';
-    submitButton.onclick = checkAnswers;
+    submitButton.onclick = showResult; // Ubah fungsi untuk menampilkan hasil
     questionContainer.appendChild(submitButton);
 
     // Tambahkan tombol Previous dan Next
@@ -788,55 +788,22 @@ function updateNavigation() {
     });
 }
 
-function checkAnswers() {
-    const selectedOption = document.querySelector('input[name="option"]:checked');
-
-    if (!selectedOption) {
-        alert("Silakan pilih jawaban terlebih dahulu.");
-        return;
-    }
-
-    const selectedValue = selectedOption.value;
-    const question = questions[currentQuestionIndex];
-
-    // Simpan jawaban yang dipilih
-    history[currentQuestionIndex] = selectedValue;
-
-    // Cek jawaban
-    if (selectedValue === question.answer) {
-        score++;
-        selectedOption.parentElement.style.backgroundColor = "green"; // Warna hijau untuk jawaban benar
-    } else {
-        selectedOption.parentElement.style.backgroundColor = "red"; // Warna merah untuk jawaban salah
-        // Tandai jawaban yang benar
-        const optionsList = document.querySelectorAll('.options li');
-        optionsList.forEach(item => {
-            const radioInput = item.querySelector('input[type="radio"]');
-            if (radioInput.value === question.answer) {
-                item.style.backgroundColor = "green"; // Warna hijau untuk jawaban benar
-            }
-        });
-    }
-
-    // Update navigasi setelah jawaban diperiksa
-    updateNavigation();
-
-    // Tampilkan hasil jika semua pertanyaan telah dijawab
-    if (history.every(status => status !== null)) {
-        showResult();
-    }
-}
-
-function navigate(direction) {
-    currentQuestionIndex += direction;
-    loadQuestion();
-}
-
 function showResult() {
-    const quizContainer = document.getElementById('quiz');
-    quizContainer.innerHTML = '';
-    const resultElement = document.getElementById('result');
+    const questionContainer = document.getElementById('quiz');
+    questionContainer.innerHTML = '';
+
+    // Hitung skor
+    score = 0;
+    questions.forEach((question, index) => {
+        const selectedOption = history[index];
+        if (selectedOption === question.answer) {
+            score++;
+        }
+    });
+
+    const resultElement = document.createElement('div');
     resultElement.innerHTML = `Anda mendapatkan ${score} dari ${questions.length} jawaban.`;
+    questionContainer.appendChild(resultElement);
 }
 
 // Load the first question
