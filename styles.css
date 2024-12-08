@@ -69,14 +69,15 @@ button:disabled {
     margin-top: 10px;
 }
 #navigation-container {
-    display: flex; /* Menggunakan flexbox untuk tata letak horizontal */
+    display: flex; /* Menggunakan flexbox untuk tata letak */
+    flex-wrap: wrap; /* Membuat kotak berpindah ke baris berikutnya jika tidak ada ruang */
     justify-content: center; /* Menyusun kotak di tengah */
     margin-bottom: 20px;
 }
 
 .nav-box {
-    width: 30px;
-    height: 30px;
+    width: 30px; /* Lebar kotak */
+    height: 30px; /* Tinggi kotak */
     margin: 5px; /* Jarak antar kotak */
     display: flex;
     align-items: center; /* Menyusun teks di tengah secara vertikal */
