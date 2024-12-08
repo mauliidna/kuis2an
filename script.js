@@ -783,7 +783,7 @@ function updateNavigation() {
         if (history[index] === questions[index].answer) {
             box.style.backgroundColor = "green"; // Jawaban benar
         } else if (history[index] !== null) {
-            box.style.backgroundColor = "red"; // Jawaban salah
+            box .style.backgroundColor = "red"; // Jawaban salah
         } else {
             box.style.backgroundColor = "white"; // Belum dikerjakan
         }
