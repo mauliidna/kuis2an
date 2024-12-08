@@ -826,6 +826,3 @@ function navigate(direction) {
     currentQuestionIndex += direction;
     loadQuestion();
 }
-
-// Load the first question
-loadQuestion();
