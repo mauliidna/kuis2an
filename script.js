@@ -708,41 +708,48 @@ function loadQuestion() {
     const question = questions[currentQuestionIndex];
     questionContainer.innerHTML = question.question;
 
-    question.options.forEach((option) => {
+    question.options.forEach((option, index) => {
         const optionItem = document.createElement('li');
         optionItem.textContent = option;
+        optionItem.id = `option-${index}`; // Set ID untuk setiap opsi
         optionItem.onclick = () => selectOption(option); // Menambahkan event click
         optionsContainer.appendChild(optionItem);
     });
 
     updateNavigation();
+    checkAnswer(); // Memeriksa jawaban yang sudah dipilih
 }
 
 function selectOption(selectedOption) {
     // Simpan jawaban yang dipilih
     history[currentQuestionIndex] = selectedOption;
+    loadQuestion(); // Muat pertanyaan baru
+}
 
-    // Update warna semua opsi
+function checkAnswer() {
     const options = document.querySelectorAll('.options li');
-    options.forEach((item) => {
-        if (item.textContent === selectedOption) {
-            item.style.backgroundColor = selectedOption === questions[currentQuestionIndex].answer ? "green" : "red"; // Hijau jika benar, merah jika salah
+    options.forEach((item, index) => {
+        if (history[currentQuestionIndex] === questions[currentQuestionIndex].answer) {
+            item.style.backgroundColor = "green"; // Jawaban benar
+        } else if (history[currentQuestionIndex] !== null) {
+            item.style.backgroundColor = "red"; // Jawaban salah
         } else {
-            item.style.backgroundColor = ""; // Reset warna untuk opsi lain
+            item.style.backgroundColor = ""; // Belum dikerjakan
         }
     });
 }
 
-function checkAnswer() {
-    const selectedOption = history[currentQuestionIndex];
-    if (selectedOption === questions[currentQuestionIndex].answer) {
-        score++;
-    }
-    currentQuestionIndex++;
-    if (currentQuestionIndex < questions.length) {
+function prevQuestion() {
+    if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
         loadQuestion();
-    } else {
-        showResult();
+    }
+}
+
+function nextQuestion() {
+    if (currentQuestionIndex < questions.length - 1) {
+        currentQuestionIndex++;
+        loadQuestion();
     }
 }
 
@@ -750,7 +757,6 @@ function showResult() {
     const quizContainer = document.getElementById('quiz');
     quizContainer.innerHTML = `<h2>Anda mendapatkan ${score} dari ${questions.length} jawaban.</h2>`;
 }
-
 
 function updateNavigation() {
     const navigationContainer = document.getElementById('navigation-container');
@@ -762,21 +768,18 @@ function updateNavigation() {
         box.textContent = index + 1;
 
         // Set warna berdasarkan status jawaban
-if (history[index] === questions[index].answer) {
-    box.style.backgroundColor = "green"; // Jawaban benar
-} else if (history[index] !== null) {
-    box.style.backgroundColor = "red"; // Jawaban salah
-} else {
-    box.style.backgroundColor = "white"; // Belum dikerjakan
-}
+        if (history[index] === questions[index].answer) {
+            box.style.backgroundColor = "green"; // Jawaban benar
+        } else if (history[index] !== null) {
+            box.style.backgroundColor = "red"; // Jawaban salah
+        } else {
+            box.style.backgroundColor = "white"; // Belum dikerjakan
+        }
 
-// Menambahkan event listener untuk mengubah jawaban
-box.onclick = () => {
-    // Simpan jawaban yang dipilih ke dalam history
-    history[currentQuestionIndex] = box.dataset.answer; // Pastikan box memiliki data attribute 'data-answer'
-    currentQuestionIndex = index; // Set index pertanyaan saat ini
-    loadQuestion(); // Muat pertanyaan baru
-};
+        box.onclick = () => {
+            currentQuestionIndex = index;
+            loadQuestion();
+        };
 
         navigationContainer.appendChild(box);
     });
