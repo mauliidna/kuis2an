@@ -695,8 +695,6 @@ const questions = [
 ];
 let currentQuestionIndex = 0;
 let score = 0;
-const userAnswers = Array(questions.length).fill(null); // Menyimpan jawaban pengguna
-
 function loadQuestion() {
     const questionContainer = document.getElementById('quiz');
     questionContainer.innerHTML = '';
@@ -706,117 +704,66 @@ function loadQuestion() {
     questionElement.innerHTML = `<h2>${question.question}</h2>`;
     const optionsList = document.createElement('ul');
     optionsList.classList.add('options');
-
-    question.options.forEach((option, index) => {
+    question.options.forEach(option => {
         const optionItem = document.createElement('li');
         optionItem.textContent = option;
-        optionItem.onclick = () => selectOption(option, optionItem, index);
+        optionItem.onclick = () => selectOption(option, optionItem);
         optionsList.appendChild(optionItem);
     });
-
     questionContainer.appendChild(questionElement);
     questionContainer.appendChild(optionsList);
-    loadNavigation();
-}
-
-function loadNavigation() {
+    // Tambahkan tombol Next dan Previous
     const navigation = document.createElement('div');
     navigation.classList.add('navigation');
-
     const prevButton = document.createElement('button');
     prevButton.textContent = 'Previous';
     prevButton.onclick = () => navigate(-1);
-    prevButton.disabled = currentQuestionIndex === 0;
-
+    prevButton.disabled = currentQuestionIndex === 0; // Disable jika di pertanyaan pertama
     const nextButton = document.createElement('button');
     nextButton.textContent = 'Next';
     nextButton.onclick = () => navigate(1);
-    nextButton.disabled = currentQuestionIndex === questions.length - 1;
-
-    const submitButton = document.createElement('button');
-    submitButton.textContent = 'Submit';
-    submitButton.onclick = showResult;
-
+    nextButton.disabled = currentQuestionIndex === questions.length - 1; // Disable jika di pertanyaan terakhir
     navigation.appendChild(prevButton);
     navigation.appendChild(nextButton);
-    navigation.appendChild(submitButton);
-
-    // Navigasi nomor soal
-    questions.forEach((_, index) => {
-        const numberBox = document.createElement('div');
-        numberBox.classList.add('number');
-        numberBox.textContent = index + 1;
-        numberBox.onclick = () => {
-            if (userAnswers[currentQuestionIndex] !== null) {
-                alert("Silakan submit jawaban Anda sebelum berpindah.");
-            } else {
-                currentQuestionIndex = index;
-                loadQuestion();
-            }
-        };
-        // Tandai jawaban yang sudah dipilih
-        if (userAnswers[index] !== null) {
-            numberBox.classList.add('selected');
-            if (userAnswers[index] === questions[index].answer) {
-                numberBox.classList.add('correct');
-            } else {
-                numberBox.classList.add('incorrect');
-            }
-        }
-        navigation.appendChild(numberBox);
-    });
-
     questionContainer.appendChild(navigation);
 }
-
-function selectOption(selectedOption, optionItem, index) {
+function selectOption(selectedOption, optionItem) {
     const question = questions[currentQuestionIndex];
-    const optionsList = document.querySelectorAll('.options li');
-
-    // Hapus pilihan sebelumnya
-    optionsList.forEach(item => {
-        item.classList.remove('selected');
-    });
-
-    // Tandai jawaban yang dipilih
-    optionItem.classList.add('selected');
-    userAnswers[currentQuestionIndex] = selectedOption; // Simpan jawaban pengguna
-
-    // Berikan umpan balik
     const feedbackElement = document.createElement('div');
     feedbackElement.classList.add('feedback');
+    // Tandai jawaban yang dipilih
     if (selectedOption === question.answer) {
         score++;
-        optionItem.classList.add('correct');
+        optionItem.style.backgroundColor = "green"; // Warna hijau untuk jawaban benar
         feedbackElement.textContent = "Jawaban Anda benar!";
         feedbackElement.style.color = "green";
     } else {
-        optionItem.classList.add('incorrect');
+        optionItem.style.backgroundColor = "red"; // Warna merah untuk jawaban salah
         feedbackElement.textContent = `Jawaban Anda salah! Jawaban yang benar adalah: ${question.answer}`;
         feedbackElement.style.color = "red";
         // Tandai jawaban yang benar
+        const optionsList = document.querySelectorAll('.options li');
         optionsList.forEach(item => {
             if (item.textContent === question.answer) {
-                item.classList.add('correct');
+                item.style.backgroundColor = "green"; // Warna hijau untuk jawaban benar
             }
         });
     }
-    const questionContainer = document.getElementBy;
     const questionContainer = document.getElementById('quiz');
     questionContainer.appendChild(feedbackElement);
+    // Tampilkan tombol Next setelah memilih jawaban
+    const nextButton = document.querySelector('.navigation button:nth-child(2)');
+    nextButton.style.display = 'inline-block';
 }
-
 function navigate(direction) {
     currentQuestionIndex += direction;
     loadQuestion();
 }
-
 function showResult() {
     const quizContainer = document.getElementById('quiz');
     quizContainer.innerHTML = '';
     const resultElement = document.getElementById('result');
     resultElement.innerHTML = `Anda mendapatkan ${score} dari ${questions.length} jawaban.`;
 }
-
 // Load the first question
 loadQuestion();
