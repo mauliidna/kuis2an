@@ -694,6 +694,7 @@ const questions = [
     },
 ];
 
+
 let currentQuestionIndex = 0;
 let score = 0;
 let history = new Array(questions.length).fill(null); // Menyimpan status jawaban
@@ -793,10 +794,10 @@ function showResult() {
     questionContainer.innerHTML = '';
 
     // Hitung skor
-    score = 0 ```javascript
+    score = 0;
     questions.forEach((question, index) => {
         const selectedOption = history[index];
-        if (selectedOption === question.answer) {
+        if (selectedOption === question .answer) {
             score++;
         }
     });
@@ -821,7 +822,7 @@ function navigate(direction) {
 
 function updateOptionColors() {
     const options = document.querySelectorAll('.options li');
-    options.forEach((optionItem, index) => {
+    options.forEach((optionItem) => {
         const radioInput = optionItem.querySelector('input');
         if (radioInput.checked) {
             if (radioInput.value === questions[currentQuestionIndex].answer) {
