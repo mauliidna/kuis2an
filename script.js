@@ -700,58 +700,21 @@ let score = 0;
 let history = new Array(questions.length).fill(null); // Menyimpan status jawaban
 
 function loadQuestion() {
-    const questionContainer = document.getElementById('quiz');
+    const questionContainer = document.getElementById('question');
+    const optionsContainer = document.getElementById('options');
     questionContainer.innerHTML = '';
+    optionsContainer.innerHTML = '';
 
     const question = questions[currentQuestionIndex];
-    const questionElement = document.createElement('div');
-    questionElement.classList.add('question');
-    questionElement.innerHTML = `<h2>${question.question}</h2>`;
-
-    const optionsList = document.createElement('ul');
-    optionsList.classList.add('options');
+    questionContainer.innerHTML = question.question;
 
     question.options.forEach((option) => {
         const optionItem = document.createElement('li');
         optionItem.textContent = option;
         optionItem.onclick = () => selectOption(option); // Menambahkan event click
-
-        // Tandai jika sudah dipilih
-        if (history[currentQuestionIndex] === option) {
-            optionItem.style.backgroundColor = history[currentQuestionIndex] === question.answer ? "green" : "red";
-        }
-
-        optionsList.appendChild(optionItem);
+        optionsContainer.appendChild(optionItem);
     });
 
-    questionContainer.appendChild(questionElement);
-    questionContainer.appendChild(optionsList);
-
-    // Tambahkan tombol Submit
-    const submitButton = document.createElement('button');
-    submitButton.textContent = 'Submit';
-    submitButton.onclick = showResult; // Ubah fungsi untuk menampilkan hasil
-    questionContainer.appendChild(submitButton);
-
-    // Tambahkan tombol Previous dan Next
-    const navigation = document.createElement('div');
-    navigation.classList.add('navigation');
-
-    const prevButton = document.createElement('button');
-    prevButton.textContent = 'Previous';
-    prevButton.onclick = () => navigate(-1);
-    prevButton.disabled = currentQuestionIndex === 0;
-
-    const nextButton = document.createElement('button');
-    nextButton.textContent = 'Next';
-    nextButton.onclick = () => navigate(1);
-    nextButton.disabled = currentQuestionIndex === questions.length - 1;
-
-    navigation.appendChild(prevButton);
-    navigation.appendChild(nextButton);
-    questionContainer.appendChild(navigation);
-
-    // Update navigasi
     updateNavigation();
 }
 
@@ -768,6 +731,24 @@ function selectOption(selectedOption) {
             item.style.backgroundColor = ""; // Reset warna untuk opsi lain
         }
     });
+}
+
+function checkAnswer() {
+    const selectedOption = history[currentQuestionIndex];
+    if (selectedOption === questions[currentQuestionIndex].answer) {
+        score++;
+    }
+    currentQuestionIndex++;
+    if (currentQuestionIndex < questions.length) {
+        loadQuestion();
+    } else {
+        showResult();
+    }
+}
+
+function showResult() {
+    const quizContainer = document.getElementById('quiz');
+    quizContainer.innerHTML = `<h2>Anda mendapatkan ${score} dari ${questions.length} jawaban.</h2>`;
 }
 
 function updateNavigation() {
@@ -797,28 +778,5 @@ function updateNavigation() {
     });
 }
 
-function showResult() {
-    const questionContainer = document.getElementById('quiz');
-    questionContainer.innerHTML = '';
-
-    // Hitung skor
-    score = 0;
-    questions.forEach((question, index) => {
-        const selectedOption = history[index];
-        if (selectedOption === question.answer) score++;
-        }
-    });
-
-    const resultElement = document.createElement('div');
-    resultElement.innerHTML = `Anda mendapatkan ${score} dari ${questions.length} jawaban.`;
-    questionContainer.appendChild(resultElement);
-}
-
-function navigate(direction) {
-    // Pindah ke pertanyaan berikutnya
-    currentQuestionIndex += direction;
-    loadQuestion();
-}
-
-// Inisialisasi pertanyaan pertama saat halaman dimuat ```javascript
+// Inisialisasi pertanyaan pertama saat halaman dimuat
 loadQuestion();
